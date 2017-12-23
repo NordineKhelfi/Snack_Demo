@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khelfi.snackdemo.Common.Common;
 import com.khelfi.snackdemo.Model.User;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -55,6 +56,7 @@ public class SignInActivity extends AppCompatActivity {
                             User user = dataSnapshot.child(etPhone.getText().toString()).getValue(User.class);
                             if(etPass.getText().toString().equals(user.getPassword())){
                                 Toast.makeText(getApplicationContext(), "Login successful ! Welcom " + user.getName(), Toast.LENGTH_SHORT).show();
+                                Common.currentUser = user;
                                 Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                                 startActivity(intent);
                                 finish();
