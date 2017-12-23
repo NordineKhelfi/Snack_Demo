@@ -14,10 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.khelfi.snackdemo.Common.Common;
+import com.khelfi.snackdemo.Interfaces.ItemClickListener;
+import com.khelfi.snackdemo.Model.Category;
+import com.khelfi.snackdemo.ViewHolder.MenuViewHolder;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,6 +67,25 @@ public class HomeActivity extends AppCompatActivity
         category_table = FirebaseDatabase.getInstance().getReference("Category");
 
         //Load menu from DB
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+
+        FirebaseRecyclerAdapter<Category, MenuViewHolder> recyclerAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class, category_table) {
+            @Override
+            protected void populateViewHolder(MenuViewHolder viewHolder, final Category model, int position) {
+                viewHolder.tvMenuName.setText(model.getName());
+                Picasso.with(getBaseContext()).load(model.getLink()).into(viewHolder.ivMenu);
+
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        Toast.makeText(getApplicationContext(), "This is " + model.getName(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        };
+
+        recyclerView.setAdapter(recyclerAdapter);
 
     }
 
@@ -83,7 +108,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
+        /*// Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
@@ -91,7 +116,7 @@ public class HomeActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
