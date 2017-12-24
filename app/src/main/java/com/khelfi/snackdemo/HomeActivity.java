@@ -81,7 +81,6 @@ public class HomeActivity extends AppCompatActivity
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        Toast.makeText(getApplicationContext(), "This is " + model.getName(), Toast.LENGTH_SHORT).show();
                         //Send CategoryID to the new activity
                         Intent intent = new Intent(HomeActivity.this, FoodListActivity.class);
                         intent.putExtra("CategoryId", recyclerAdapter.getRef(position).getKey());   // <-- FirebaseUI features ... Awesome

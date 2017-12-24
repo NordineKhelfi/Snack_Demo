@@ -1,5 +1,7 @@
 package com.khelfi.snackdemo;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +43,7 @@ public class FoodListActivity extends AppCompatActivity {
             recyclerAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(Food.class,
                     R.layout.food_item,
                     FoodViewHolder.class,
-                    food_table.orderByChild("menuId").equalTo(categoryId)) {    // <-- "SELECT * FROM food_table WHERE menuId = categoryId" in SQL
+                    food_table.orderByChild("menuId").equalTo(categoryId)) {    // <-- " SELECT * FROM food_table WHERE menuId = 'categoryId' " in SQL
 
                 @Override
                 protected void populateViewHolder(FoodViewHolder viewHolder, final Food model, int position) {
@@ -51,7 +53,10 @@ public class FoodListActivity extends AppCompatActivity {
                     viewHolder.setItemClickListener(new ItemClickListener() {
                         @Override
                         public void onClick(View view, int position, boolean isLongClick) {
-                            Toast.makeText(getApplicationContext(), "This is " + model.getName(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(FoodListActivity.this, FoodDetailActivity.class);
+                            intent.putExtra("foodId", recyclerAdapter.getRef(position).getKey());
+                            startActivity(intent)   ;
+
                         }
                     });
 
