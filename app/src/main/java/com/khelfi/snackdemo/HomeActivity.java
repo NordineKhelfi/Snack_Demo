@@ -1,5 +1,6 @@
 package com.khelfi.snackdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,6 +32,7 @@ public class HomeActivity extends AppCompatActivity
     TextView tvUser;
     DatabaseReference category_table;
     RecyclerView recyclerView;
+    FirebaseRecyclerAdapter<Category, MenuViewHolder> recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class HomeActivity extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
-        FirebaseRecyclerAdapter<Category, MenuViewHolder> recyclerAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class, category_table) {
+        recyclerAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class, category_table) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, final Category model, int position) {
                 viewHolder.tvMenuName.setText(model.getName());
@@ -80,6 +82,10 @@ public class HomeActivity extends AppCompatActivity
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
                         Toast.makeText(getApplicationContext(), "This is " + model.getName(), Toast.LENGTH_SHORT).show();
+                        //Send CategoryID to the new activity
+                        Intent intent = new Intent(HomeActivity.this, FoodListActivity.class);
+                        intent.putExtra("CategoryId", recyclerAdapter.getRef(position).getKey());   // <-- FirebaseUI features ... Awesome
+                        startActivity(intent);
                     }
                 });
             }

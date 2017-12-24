@@ -13,7 +13,7 @@
         android:text="Snack Demo"
         android:id="@+id/tvTitle"
         android:layout_centerHorizontal="true"
-        android:textSize="45dp"
+        android:textSize="58dp"
         android:textColor="@color/btn_unpressed"
         android:layout_marginTop="140dp"
          />
@@ -24,35 +24,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="35dp">
+        android:layout_marginBottom="27dp">
 
-        <info.hoang8f.widget.FButton
+        <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:id="@+id/bSignUp"
             android:text="Sign Up"
-            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/bSignUp"
             android:layout_weight="1"
-            app:fButtonColor="@color/colorAccent"
-            app:shadowEnabled="true"
-            app:shadowHeight="5dp"
-            app:cornerRadius="5dp"
-            />
+            android:layout_marginHorizontal="8dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/btn_selector"/>
 
-        <info.hoang8f.widget.FButton
+        <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:id="@+id/bSignIn"
             android:text="Sign In"
-            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/bSignIn"
             android:layout_weight="1"
-            app:fButtonColor="@color/colorAccent"
-            app:shadowEnabled="true"
-            app:shadowHeight="5dp"
-            app:cornerRadius="5dp"
-            />
+            android:layout_marginHorizontal="8dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/btn_selector"/>
+
 
     </LinearLayout>
 

@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/etPhone"
             android:hint="Phone number"
+            android:text="555-213-123"
             android:textSize="20dp"
             app:met_textColorHint="@android:color/white"
             app:met_baseColor="@android:color/white"
@@ -44,8 +45,7 @@
 
     </LinearLayout>
 
-
-    <info.hoang8f.widget.FButton
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bSignIn"
@@ -53,6 +53,6 @@
         android:text="Sign In"
         android:textColor="@color/colorPrimaryDark"
         android:layout_margin="30dp"
-        app:fButtonColor="@color/btn_unpressed"/>
+        android:background="@drawable/btn_selector"/>
 
 </RelativeLayout>

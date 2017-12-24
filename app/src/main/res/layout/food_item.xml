@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     card_view:cardElevation="8dp"
-    android:layout_marginBottom="18dp"
+    android:layout_marginBottom="16dp"
     >
 
     <RelativeLayout
@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/ivMenuItem"
+            android:id="@+id/ivFoodItem"
             android:scaleType="centerCrop"
             android:background="@color/overlayBackground"
             />
@@ -22,9 +22,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tvMealName"
+            android:id="@+id/tvFoodName"
             android:layout_alignParentBottom="true"
-            android:text="Name of the meal"
+            android:text="Name of the food"
             android:gravity="center_horizontal"
             android:textSize="20sp"
             android:textColor="@android:color/white"

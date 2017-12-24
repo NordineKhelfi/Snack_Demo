@@ -66,7 +66,7 @@
             android:inputType="textPassword"
             android:layout_marginHorizontal="40dp"/>
 
-        <info.hoang8f.widget.FButton
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bSignUp"
@@ -76,7 +76,7 @@
             android:layout_marginTop="45dp"
             android:layout_marginBottom="25dp"
             android:layout_marginHorizontal="10dp"
-            app:fButtonColor="@color/btn_unpressed"/>
+            android:background="@drawable/btn_selector"/>
 
 
     </LinearLayout>
