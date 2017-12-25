@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.khelfi.snackdemo.Common.Common;
 import com.khelfi.snackdemo.Interfaces.ItemClickListener;
 import com.khelfi.snackdemo.Model.Category;
+import com.khelfi.snackdemo.ViewHolder.CartAdapter;
 import com.khelfi.snackdemo.ViewHolder.MenuViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +35,7 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView recyclerView;
     FirebaseRecyclerAdapter<Category, MenuViewHolder> recyclerAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +44,13 @@ public class HomeActivity extends AppCompatActivity
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent cartIntent = new Intent(HomeActivity.this, CartActivity.class);
+                startActivity(cartIntent);
             }
         });
 
@@ -132,13 +135,14 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_menu) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_cart) {
+            Intent cartIntent = new Intent(HomeActivity.this, CartActivity.class);
+            startActivity(cartIntent);
+        } else if (id == R.id.nav_orders) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_exit) {
 
         }
 

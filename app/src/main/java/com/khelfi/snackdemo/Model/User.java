@@ -2,6 +2,7 @@ package com.khelfi.snackdemo.Model;
 
 /**
  * Created by norma on 23/12/2017.
+ *
  */
 
 public class User {
