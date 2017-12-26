@@ -68,7 +68,7 @@ public class Database extends SQLiteAssetHelper {
     public void clearCart(){
 
         SQLiteDatabase db = getReadableDatabase();
-        String query = "DELETE * FROM OrderDetail";
+        String query = "DELETE FROM OrderDetail";   // <-- Does'n work with " DELETE * FROM ". Understant this
         db.execSQL(query);
     }
 

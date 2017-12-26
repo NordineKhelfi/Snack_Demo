@@ -54,6 +54,8 @@ public class SignInActivity extends AppCompatActivity {
 
                         if(dataSnapshot.child(etPhone.getText().toString()).exists()){
                             User user = dataSnapshot.child(etPhone.getText().toString()).getValue(User.class);
+                            //We manually add phone number because it's not present in the Firebase User table
+                            user.setPhone(etPhone.getText().toString());
 
                             if(etPass.getText().toString().equals(user.getPassword())){
                                 Common.currentUser = user;
