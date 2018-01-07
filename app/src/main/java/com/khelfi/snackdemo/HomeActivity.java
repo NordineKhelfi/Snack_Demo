@@ -146,7 +146,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_exit) {
             Intent exitIntent = new Intent(HomeActivity.this, SignInActivity.class);
-            exitIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            exitIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);   // --> https://developer.android.com/reference/android/content/Intent.html#FLAG_ACTIVITY_CLEAR_TASK
             startActivity(exitIntent);
         }
 
