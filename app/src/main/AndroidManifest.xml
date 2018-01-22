@@ -27,7 +27,12 @@
         <activity android:name=".FoodListActivity" />
         <activity android:name=".FoodDetailActivity" />
         <activity android:name=".CartActivity" />
-        <activity android:name=".OrderActivity"></activity>
+        <activity android:name=".OrderActivity" />
+
+        <service
+            android:name=".Services.ListenOrderService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

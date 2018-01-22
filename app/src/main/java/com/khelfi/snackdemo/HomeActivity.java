@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.khelfi.snackdemo.Common.Common;
 import com.khelfi.snackdemo.Interfaces.ItemClickListener;
 import com.khelfi.snackdemo.Model.Category;
+import com.khelfi.snackdemo.Services.ListenOrderService;
 import com.khelfi.snackdemo.ViewHolder.CartAdapter;
 import com.khelfi.snackdemo.ViewHolder.MenuViewHolder;
 import com.squareup.picasso.Picasso;
@@ -94,6 +95,11 @@ public class HomeActivity extends AppCompatActivity
         };
 
         recyclerView.setAdapter(recyclerAdapter);
+
+        //Register our service
+        ListenOrderService.userPhone = Common.currentUser.getPhone();
+        Intent serviceIntent = new Intent(HomeActivity.this, ListenOrderService.class);
+        startService(serviceIntent);
 
     }
 

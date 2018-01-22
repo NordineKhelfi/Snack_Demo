@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bSignIn = (Button) findViewById(R.id.bSignIn);
         bSignUp = (Button) findViewById(R.id.bSignUp);
+        bSignIn = (Button) findViewById(R.id.bSignIn);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
 
         Typeface ttf = Typeface.createFromAsset(getAssets(), "fonts/Landliebe.ttf");

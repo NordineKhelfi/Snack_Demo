@@ -10,6 +10,7 @@ public class User {
     private String name;
     private String password;
     private String phone;
+    private String isStaff;
 
     public User() {
 
@@ -18,6 +19,7 @@ public class User {
     public User(String name, String password) {
         this.name = name;
         this.password = password;
+        this.isStaff = "false";
     }
 
     public String getName() {
@@ -43,4 +45,8 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public String getIsStaff() { return isStaff; }
+
+    public void setIsStaff(String isStaff) { this.isStaff = isStaff; }
 }
