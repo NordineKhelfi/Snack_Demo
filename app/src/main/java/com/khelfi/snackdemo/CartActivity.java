@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,7 +27,7 @@ import com.khelfi.snackdemo.Model.Notification;
 import com.khelfi.snackdemo.Model.Order;
 import com.khelfi.snackdemo.Model.Request;
 import com.khelfi.snackdemo.Model.Token;
-import com.khelfi.snackdemo.RemoteWebServer.APIService;
+import com.khelfi.snackdemo.RemoteWebService.APIService;
 import com.khelfi.snackdemo.ViewHolder.CartAdapter;
 
 import java.text.NumberFormat;

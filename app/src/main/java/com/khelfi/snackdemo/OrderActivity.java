@@ -1,15 +1,21 @@
 package com.khelfi.snackdemo;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.khelfi.snackdemo.Common.Common;
 import com.khelfi.snackdemo.Interfaces.ItemClickListener;
+import com.khelfi.snackdemo.Model.Order;
 import com.khelfi.snackdemo.Model.Request;
 import com.khelfi.snackdemo.ViewHolder.OrderViewHolder;
 
@@ -42,30 +48,45 @@ public class OrderActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        recyclerAdapter.stopListening();
+    }
+
     private void loadOrders(String phone) {
 
-        recyclerAdapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(Request.class,
-                R.layout.order_item,
-                OrderViewHolder.class,
-                requests.orderByChild("phone").equalTo(phone)) {    // <-- "SELECT * FROM Requests WHERE phone = 'phone' "
+        Query query = requests.orderByChild("phone").equalTo(phone);
 
+        FirebaseRecyclerOptions<Request> recyclerOptions = new FirebaseRecyclerOptions.Builder<Request>()
+                .setQuery(query, Request.class)
+                .build();
 
+        recyclerAdapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(recyclerOptions) {
             @Override
-            protected void populateViewHolder(OrderViewHolder viewHolder, Request model, int position) {
+            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Request model) {
 
-                viewHolder.tvId.setText(recyclerAdapter.getRef(position).getKey());
-                viewHolder.tvStatus.setText(codeToStatus(model.getStatus()));
-                viewHolder.tvPhone.setText(model.getPhone());
-                viewHolder.tvAddress.setText(model.getAddress());
+                holder.tvId.setText(recyclerAdapter.getRef(position).getKey());
+                holder.tvStatus.setText(codeToStatus(model.getStatus()));
+                holder.tvPhone.setText(model.getPhone());
+                holder.tvAddress.setText(model.getAddress());
 
-                viewHolder.setItemClickListener(new ItemClickListener() {
+                holder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
 
                     }
                 });
             }
+
+            @Override
+            public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item, parent, false);
+                return new OrderViewHolder(itemView);
+            }
         };
+
+        recyclerAdapter.startListening();
 
         recyclerView.setAdapter(recyclerAdapter);
 

@@ -2,8 +2,10 @@ package com.khelfi.snackdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,11 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.khelfi.snackdemo.Common.Common;
 import com.khelfi.snackdemo.Interfaces.ItemClickListener;
@@ -74,13 +79,18 @@ public class HomeActivity extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
-        recyclerAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class, category_table) {
-            @Override
-            protected void populateViewHolder(MenuViewHolder viewHolder, final Category model, int position) {
-                viewHolder.tvMenuName.setText(model.getName());
-                Picasso.with(getBaseContext()).load(model.getLink()).into(viewHolder.ivMenu);
+        FirebaseRecyclerOptions<Category> recyclerOptions = new FirebaseRecyclerOptions.Builder<Category>()
+                .setQuery(category_table, Category.class)
+                .build();
 
-                viewHolder.setItemClickListener(new ItemClickListener() {
+        recyclerAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(recyclerOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull MenuViewHolder holder, int position, @NonNull Category model) {
+
+                holder.tvMenuName.setText(model.getName());
+                Picasso.with(getBaseContext()).load(model.getLink()).into(holder.ivMenu);
+
+                holder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
                         //Send CategoryID to the new activity
@@ -90,12 +100,33 @@ public class HomeActivity extends AppCompatActivity
                     }
                 });
             }
+
+            @Override
+            public MenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item, parent, false);
+                return new MenuViewHolder(itemView);
+            }
         };
+
+        recyclerAdapter.startListening();
 
         recyclerView.setAdapter(recyclerAdapter);
 
         updateTokenToFirebaseDB(FirebaseInstanceId.getInstance().getToken());
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        recyclerAdapter.stopListening();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recyclerAdapter.startListening();
     }
 
     private void updateTokenToFirebaseDB(String refreshedToken) {

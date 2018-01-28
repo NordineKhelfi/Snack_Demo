@@ -1,4 +1,4 @@
-package com.khelfi.snackdemo.RemoteWebServer;
+package com.khelfi.snackdemo.RemoteWebService;
 
 import com.khelfi.snackdemo.Model.Message;
 import com.khelfi.snackdemo.Model.MyResponse;
@@ -9,8 +9,10 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
- *We use Retrofit library to make HTTP requests to our remote FCM remote webserver,
+ *We use Retrofit library to make HTTP requests to our remote FCM remote webservice,
  * asking it to deliver our notification ...
+ *
+ * --> https://firebase.google.com/docs/cloud-messaging/send-message#send_messages_to_specific_devices_2
  *
  * Created by norma on 23/01/2018.
  */

@@ -57,7 +57,7 @@ public class FoodDetailActivity extends AppCompatActivity {
         if(!foodId.isEmpty()){
 
             //With the foodId passed from previous activity, we get food details from the DB
-            food_table.child(foodId).addValueEventListener(new ValueEventListener() {
+            food_table.child(foodId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Food food = dataSnapshot.getValue(Food.class);

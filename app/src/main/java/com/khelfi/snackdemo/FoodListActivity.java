@@ -2,19 +2,24 @@ package com.khelfi.snackdemo;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.khelfi.snackdemo.Interfaces.ItemClickListener;
 import com.khelfi.snackdemo.Model.Food;
@@ -96,24 +101,30 @@ public class FoodListActivity extends AppCompatActivity {
             public void onSearchStateChanged(boolean enabled) {
 
                 //When the searchBar is closed, we restore the original recyclerAdapter
-                if(!enabled)
+                if(!enabled){
+                    searchAdapter.stopListening();
                     recyclerView.setAdapter(recyclerAdapter);
+                }
             }
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
 
                 //We set the reyclerAdapter corresponding to our research
-                searchAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(Food.class,
-                        R.layout.food_item,
-                        FoodViewHolder.class,
-                        food_table.orderByChild("name").equalTo(text.toString())) {
-                    @Override
-                    protected void populateViewHolder(FoodViewHolder viewHolder, Food model, int position) {
-                        viewHolder.tvFood.setText(model.getName());
-                        Picasso.with(getApplicationContext()).load(model.getImageLink()).into(viewHolder.ivFood);
 
-                        viewHolder.setItemClickListener(new ItemClickListener() {
+                Query searchQuery = food_table.orderByChild("name").equalTo(text.toString());
+                FirebaseRecyclerOptions<Food> searchRecyclerOptions = new FirebaseRecyclerOptions.Builder<Food>()
+                        .setQuery(searchQuery, Food.class)
+                        .build();
+
+                searchAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(searchRecyclerOptions) {
+                    @Override
+                    protected void onBindViewHolder(@NonNull FoodViewHolder holder, int position, @NonNull Food model) {
+
+                        holder.tvFood.setText(model.getName());
+                        Picasso.with(getApplicationContext()).load(model.getImageLink()).into(holder.ivFood);
+
+                        holder.setItemClickListener(new ItemClickListener() {
                             @Override
                             public void onClick(View view, int position, boolean isLongClick) {
                                 Intent intent = new Intent(FoodListActivity.this, FoodDetailActivity.class);
@@ -123,8 +134,15 @@ public class FoodListActivity extends AppCompatActivity {
                             }
                         });
                     }
+
+                    @Override
+                    public FoodViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_item, parent, false);
+                        return new FoodViewHolder(itemView);
+                    }
                 };
 
+                searchAdapter.startListening();
                 recyclerView.setAdapter(searchAdapter);
             }
 
@@ -137,30 +155,52 @@ public class FoodListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        recyclerAdapter.stopListening();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recyclerAdapter.startListening();
+    }
+
     private void loadFoodList(String categoryId) {
         //Fill the recyclerView
-        recyclerAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(Food.class,
-                R.layout.food_item,
-                FoodViewHolder.class,
-                food_table.orderByChild("menuId").equalTo(categoryId)) {    // <-- " SELECT * FROM food_table WHERE menuId = 'categoryId' " in SQL
 
+        Query foodListQuery = food_table.orderByChild("menuId").equalTo(categoryId);    // <-- " SELECT * FROM food_table WHERE menuId = 'categoryId' " in SQL
+
+        FirebaseRecyclerOptions<Food> recyclerOptions = new FirebaseRecyclerOptions.Builder<Food>()
+                .setQuery(foodListQuery, Food.class)
+                .build();
+
+        recyclerAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(recyclerOptions) {
             @Override
-            protected void populateViewHolder(FoodViewHolder viewHolder, final Food model, int position) {
-                viewHolder.tvFood.setText(model.getName());
-                Picasso.with(getApplicationContext()).load(model.getImageLink()).into(viewHolder.ivFood);
+            protected void onBindViewHolder(@NonNull FoodViewHolder holder, int position, @NonNull Food model) {
 
-                viewHolder.setItemClickListener(new ItemClickListener() {
+                holder.tvFood.setText(model.getName());
+                Picasso.with(getApplicationContext()).load(model.getImageLink()).into(holder.ivFood);
+
+                holder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
                         Intent intent = new Intent(FoodListActivity.this, FoodDetailActivity.class);
                         intent.putExtra("foodId", recyclerAdapter.getRef(position).getKey());
                         startActivity(intent)   ;
-
                     }
                 });
+            }
 
+            @Override
+            public FoodViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_item, parent, false);
+                return new FoodViewHolder(itemView);
             }
         };
+
+        recyclerAdapter.startListening();
 
         //finally Set the adapter
         recyclerView.setAdapter(recyclerAdapter);

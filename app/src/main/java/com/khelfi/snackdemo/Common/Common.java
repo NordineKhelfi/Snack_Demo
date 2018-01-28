@@ -1,8 +1,8 @@
 package com.khelfi.snackdemo.Common;
 
 import com.khelfi.snackdemo.Model.User;
-import com.khelfi.snackdemo.RemoteWebServer.APIService;
-import com.khelfi.snackdemo.RemoteWebServer.RetrofitClient;
+import com.khelfi.snackdemo.RemoteWebService.APIService;
+import com.khelfi.snackdemo.RemoteWebService.RetrofitClient;
 
 /**
  * Created by norma on 23/12/2017.
